@@ -1,11 +1,11 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
 
-DATABASE_URL = 'sqlite:///ecommerce.db'
+DATABASE_URL = 'sqllite:///ecommerce.db'
 
 engine = create_engine(DATABASE_URL, echo=True)
 
-Sessionlocal = sessionmaker(engine)
+Sessionlocal = sessionmaker(bind=engine)
 
 class Base(DeclarativeBase):
     pass

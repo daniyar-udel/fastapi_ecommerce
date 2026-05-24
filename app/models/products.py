@@ -1,7 +1,8 @@
 from decimal import Decimal
 
 from sqlalchemy import String, Integer, Numeric, Boolean
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import ForeignKey
 
 from app.database import Base
 
@@ -15,3 +16,5 @@ class Product(Base):
     image_url: Mapped[str|None] = mapped_column(String, nullable=True)
     stock: Mapped[int] = mapped_column(Integer, nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    category_id: Mapped[int] = mapped_column(Integer, ForeignKey('categories.id'), nullable=False)
+    category: Mapped['Category'] = relationship('Category', back_populates='products')

@@ -31,18 +31,6 @@ async def create_category(category: CategoryCreate, db: Session=Depends(get_db))
 
     return db_category
 
-@routers.delete('/{category_id}', status_code=status.HTTP_200_OK)
-async def change_category(category_id: int, db: Session=Depends(get_db)) -> dict:
-    stmn = select(CategoryModel).where(CategoryModel.id==category_id).where(CategoryModel.is_active==True)
-    result = db.scalars(stmn).first()
-    if result is None:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Category id not found')
-    
-    db.execute(update(CategoryModel).where(CategoryModel.id==category_id).values(is_active=False))
-    db.commit()
-
-    return {'message': f'Category with {category_id} id deactivated'}
-
 @routers.put('/{category_id}', response_model=CategorySchema, status_code=status.HTTP_200_OK)
 async def delete_category(category_id: int, category: CategoryCreate, db: Session=Depends(get_db)):
     stmn = select(CategoryModel).where(CategoryModel.id==category_id).where(CategoryModel.is_active==True)
@@ -61,3 +49,15 @@ async def delete_category(category_id: int, category: CategoryCreate, db: Sessio
     db.refresh(db_category)
 
     return db_category
+
+@routers.delete('/{category_id}', status_code=status.HTTP_200_OK)
+async def change_category(category_id: int, db: Session=Depends(get_db)) -> dict:
+    stmn = select(CategoryModel).where(CategoryModel.id==category_id).where(CategoryModel.is_active==True)
+    result = db.scalars(stmn).first()
+    if result is None:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Category id not found')
+    
+    db.execute(update(CategoryModel).where(CategoryModel.id==category_id).values(is_active=False))
+    db.commit()
+
+    return {'message': f'Category with {category_id} id deactivated'}

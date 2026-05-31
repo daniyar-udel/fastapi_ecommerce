@@ -10,7 +10,7 @@ class Category(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(50), nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
-    product: Mapped[list['Product']] = relationship('Product', back_populates='category')
+    products: Mapped[list['Product']] = relationship('Product', back_populates='category')
     parent_id: Mapped[int|None] = mapped_column(ForeignKey('categories.id'), nullable=True)
     parent: Mapped['Category | None'] = relationship('Category', back_populates='children', 
                                               remote_side='Category.id')
